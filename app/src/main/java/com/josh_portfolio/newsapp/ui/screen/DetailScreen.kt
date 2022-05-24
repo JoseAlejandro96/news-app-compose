@@ -13,22 +13,23 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun TopNews(navController: NavController) {
+fun DetailScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Top News", fontWeight = FontWeight.SemiBold)
+        Text(text = "Detail Screen", fontWeight = FontWeight.SemiBold)
         Button(onClick = {
-            navController.navigate("Detail")
+            // navController.navigate("TopNews")
+            navController.popBackStack()
         }) {
-            Text(text = "Go to Detail Screen")
+            Text(text = "Go to TopNews Screen")
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun TopNewsPreview(){
-    TopNews(rememberNavController())
+fun DetailScreenPreview(){
+    DetailScreen(rememberNavController())
 }

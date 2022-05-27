@@ -1,11 +1,10 @@
 package com.josh_portfolio.newsapp.network
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import com.josh_portfolio.newsapp.models.ArticleCategory
 import com.josh_portfolio.newsapp.models.TopNewsResponse
+import com.josh_portfolio.newsapp.models.getArticleCategory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,11 +12,13 @@ import retrofit2.Response
 class NewsManager {
 
     private val _newsResponse = mutableStateOf(TopNewsResponse())
-
     val newsResponse: State<TopNewsResponse>
         @Composable get() = remember {
             _newsResponse
         }
+
+    val selectedCategory: MutableState<ArticleCategory?> = mutableStateOf(null)
+
 
     init {
         getArticles()
@@ -32,10 +33,10 @@ class NewsManager {
                 call: Call<TopNewsResponse>,
                 response: Response<TopNewsResponse>
             ) {
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     _newsResponse.value = response.body()!!
                     Log.d("news", "${_newsResponse.value}")
-                }else{
+                } else {
                     Log.d("error", "${response.errorBody()}")
                 }
             }
@@ -44,5 +45,10 @@ class NewsManager {
                 Log.d("error", "${t.printStackTrace()}")
             }
         })
+    }
+
+    fun onSelectedCategoryChange(category: String) {
+        val newCategory = getArticleCategory(category)
+        selectedCategory.value = newCategory
     }
 }
